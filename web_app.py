@@ -3,11 +3,13 @@ import streamlit as st
 # Setup the page appearance
 st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="centered")
 
-st.title("Mental Health Check-In")
-st.write("Please read each statement and select how much it applied to you **over the past week**.")
-st.divider()
+# --- 1. INITIALIZE MEMORY (SESSION STATE) ---
+if 'current_q' not in st.session_state:
+    st.session_state.current_q = 0
+if 'answers' not in st.session_state:
+    st.session_state.answers = []
 
-# The 21 Questions
+# --- 2. THE QUESTIONS & OPTIONS ---
 questions = [
     "1. I found it hard to wind down.",
     "2. I was aware of dryness of my mouth.",
@@ -39,21 +41,48 @@ options = [
     "3: Applied to me very much"
 ]
 
-# Create a form so the app doesn't refresh until the user clicks "Submit"
-with st.form("dass21_form"):
-    responses = []
-    for q in questions:
-        # Display the radio buttons and save the index (0, 1, 2, or 3)
-        choice = st.radio(q, options, index=0)
-        responses.append(options.index(choice))
+st.title("Mental Health Check-In")
+
+# --- 3. DISPLAY LOGIC ---
+
+# If we haven't finished all 21 questions yet:
+if st.session_state.current_q < len(questions):
+    
+    # Progress Bar
+    progress_percent = st.session_state.current_q / len(questions)
+    st.progress(progress_percent)
+    st.write(f"**Question {st.session_state.current_q + 1} of 21**")
+    st.divider()
+    
+    # Show the current question
+    current_question_text = questions[st.session_state.current_q]
+    st.subheader(current_question_text)
+    
+    # Get the user's choice
+    choice = st.radio("Select how much this applied to you over the past week:", options, index=None)
     
     st.divider()
-    submitted = st.form_submit_button("Calculate My Score", type="primary")
+    
+    # Next Button
+    if st.button("Next", type="primary"):
+        if choice is None:
+            st.warning("Please select an answer before continuing.")
+        else:
+            # Save the score (0, 1, 2, or 3)
+            score = options.index(choice)
+            st.session_state.answers.append(score)
+            
+            # Move to the next question
+            st.session_state.current_q += 1
+            st.rerun()
 
-# --- YOUR SCORING BACKBONE ---
-if submitted:
-    # Add a dummy 0 at the start so indices match your r1 to r21 logic
-    r = [0] + responses
+# If all questions are answered, calculate and show results:
+else:
+    st.success("You've completed the check-in!")
+    st.balloons() # Adds a nice visual celebration
+    
+    # --- 4. YOUR SCORING BACKBONE ---
+    r = [0] + st.session_state.answers
     
     d_total = r[3] + r[5] + r[10] + r[13] + r[16] + r[17] + r[21]
     a_total = r[2] + r[4] + r[7] + r[9] + r[15] + r[19] + r[20]
@@ -63,7 +92,6 @@ if submitted:
     a_score = a_total * 2
     s_score = s_total * 2
 
-    # Determine Text Results
     def get_label(score, cutoffs):
         if score <= cutoffs[0]: return "Normal"
         elif score <= cutoffs[1]: return "Mild"
@@ -75,7 +103,6 @@ if submitted:
     a_result = get_label(a_score, [7, 9, 14, 19])
     s_result = get_label(s_score, [14, 18, 25, 33])
 
-    # Display Results beautifully
     st.subheader("Your Results")
     col1, col2, col3 = st.columns(3)
     col1.metric("Depression", f"{d_score}", d_result, delta_color="off")
@@ -83,3 +110,9 @@ if submitted:
     col3.metric("Stress", f"{s_score}", s_result, delta_color="off")
     
     st.info("I will be here for you anytime you want. If you feel down, come back anytime!")
+    
+    # Add a button to restart the test
+    if st.button("Start Over"):
+        st.session_state.current_q = 0
+        st.session_state.answers = []
+        st.rerun()
