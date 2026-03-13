@@ -106,7 +106,7 @@ else:
         st.divider()
         
         # Next Button
-        if st.button("Next", type="primary"):
+        if st.button("နောက်မေးခွန်း", type="primary"):
             if choice is None:
                 st.warning("အဖြေတခုကိုရွေးပါ")
             else:
