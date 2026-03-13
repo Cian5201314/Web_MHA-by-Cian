@@ -11,34 +11,34 @@ if 'answers' not in st.session_state:
 
 # --- 2. THE QUESTIONS & OPTIONS ---
 questions = [
-    "1. I found it hard to wind down.",
-    "2. I was aware of dryness of my mouth.",
-    "3. I couldn't seem to experience any positive feeling at all.",
-    "4. I experienced breathing difficulty.",
-    "5. I found it difficult to work up the initiative to do things.",
-    "6. I tended to over-react to situations.",
-    "7. I experienced trembling (e.g., in the hands).",
-    "8. I felt that I was using a lot of nervous energy.",
-    "9. I was worried about situations in which I might panic and make a fool of myself.",
-    "10. I felt that I had nothing to look forward to.",
-    "11. I found myself getting agitated.",
-    "12. I found it difficult to relax.",
-    "13. I felt down-hearted and blue.",
-    "14. I was intolerant of anything that kept me from getting on with what I was doing.",
-    "15. I felt I was close to panic.",
-    "16. I was unable to become enthusiastic about anything.",
-    "17. I felt I wasn't worth much as a person.",
-    "18. I felt that I was rather touchy.",
-    "19. I was aware of the action of my heart in the absence of physical exertion.",
-    "20. I felt scared without any good reason.",
-    "21. I felt that life was meaningless."
+    "၁။ ကျွန်ပ်သည် စိတ်အေးလက်အေးနေဖို့ခက်ခဲခဲ့သည်။",
+    "၂။ ကျွန်ပ်သည် အာခေါင်ခြောက်တတ်သည်ကို သတိထားမိခဲ့သည်။",
+    "၃။ ကျွန်ုပ် ဘာကိုမှ အကောင်းမြင်၍ မရပါ။",
+    "၄။ ကျွန်ုပ်သည် ပင်ပင်ပန်းပန်းမလုပ်ပါဘဲ အသက်ရှူမဝသလို၊ အသက်ရှူမြန်သလို ခံစားခဲ့ရသည်။",
+    "၅။ ကျွန်ပ်သည် လုပ်စရာရှိသည်များကို ဦးအောင်လုပ်ဖို့ (စတင်ဖို့) ခက်ခဲခဲ့သည်။",
+    "၆။ ကျွန်ပ်သည် အခြေအနေများကို လိုအပ်သည်ထက်ပို၍ ပြင်းထန်စွာတုံ့ပြန်တတ်သည်။",
+    "၇။ ကျွန်ုပ်သည် ကတုန်ကယင်ဖြစ်သလို ခံစားခဲ့ရသည်။ (ဥပမာ၊ လက်တုန်ခြင်း)",
+    "၈။ ကျွန်ုပ်သည် စိတ်လှုပ်ရှားပြီး အင်အားများစွာစိုက်ထုတ်နေခဲ့ရသည်ဟု ခံစားရသည်။",
+    "၉။ ကျွန်ုပ်သည် စိတ်လှုပ်ရှား ကြောက်ရွံ့လွန်းပြီး ကြောင်တောင်တောင်ပြုမူလိုက်မိမည်ကိုစိုးရိမ်နေခဲ့မိသည်။",
+    "၁၀။ ရှေ့လျှောက် ကျွန်ပ်အတွက် ဘာမှ မျှော်ကိုးစရာ မရှိတော့ဟု ခံစားသည်။",
+    "၁၁။ ကျွန်ပ် စိတ်အနှောက်အယှက်ဖြစ်လွယ်သည်။",
+    "၁၂။ ကျွန်ုပ်သည် စိတ်ကိုဖြေလျှော့၍ ပေါ့ပေါ့ပါးပါးနေရန် ခက်ခဲခဲ့သည်။",
+    "၁၃။ ကျွန်ုပ်သည် စိတ်ပျက်အားလျော့သလို၊ စိတ်ဓာတ်ကျသလို ခံစားခဲ့ရသည်။",
+    "၁၄။ ကျွန်ုပ် လုပ်ဆောင်နေသည့်အရာများ ရှေ့ဆက်မရအောင် အဟန့်အတားဖြစ်စေသည့် အရာများကို သည်းမခံနိုင်ခဲ့ပါ။",
+    "၁၅။ ကျွန်ုပ်သည် ရုတ်တရက် စိုးရိမ်ထိတ်လန့်ပြီး စိတ်လွတ်လုနီးပါး ခံစားခဲ့ရသည်။",
+    "၁၆။ ကျွန်ပ်သည် အရာအားလုံးနီးပါးတွင် စိတ်ဝင်စားမှုလျော့ပါးနေသည်။",
+    "၁၇။ ကျွန်ုပ်သည် မိမိကိုယ်ကိုယ် တန်ဖိုးမရှိသူတစ်ယောက်ကဲ့သို့ ခံစားရသည်။",
+    "၁၈။ ကျွန်ပ်သည် မိမိကိုယ်ကိုယ် စိတ်ဆတ်လာသည်ဟု ခံစားရသည်။",
+    "၁၉။ ကျွန်ပ်သည် ကိုယ်လက်လှုပ်ရှားမှု မရှိပါပဲ နှလုံးခုန်မြန်နေတတ်သည်။",
+    "၂၀။ ကျွန်ပ်သည် အကြောင်းပြချက်ကောင်းကောင်းမရှိပဲ ကြောက်ရွံ့နေသည်။",
+    "၂၁။ ကျွန်ုပ်၏ ဘဝသည် အဓိပ္ပါယ်မရှိဟု ခံစားခဲ့ရသည်။"
 ]
 
 options = [
-    "0: Did not apply to me at all",
-    "1: Applied to me to some degree",
-    "2: Applied to me to a considerable degree",
-    "3: Applied to me very much"
+    "0: လုံးဝမဖြစ်ပါ။",
+    "1: တခါတရံ ဖြစ်သည်။",
+    "2: အမြဲ မဟုတ်၊ မကြာခဏဖြစ်သည်။",
+    "3: အမြဲဖြစ်သည်၊ အလွန်အမင်းဖြစ်သည်။"
 ]
 
 st.title("Mental Health Check-In")
@@ -116,3 +116,4 @@ else:
         st.session_state.current_q = 0
         st.session_state.answers = []
         st.rerun()
+
