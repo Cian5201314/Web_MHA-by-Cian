@@ -6,7 +6,7 @@ st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="c
 st.markdown("""
 <style>
     html, body, [class*="st-"] {
-        font-family: 'Noto Sans Myanmar', sans-serif;
+        font-family: 'Umoe', sans-serif;
     }
 </style>
 """, unsafe_allow_html=True)
