@@ -8,6 +8,13 @@ st.markdown("""
     html, body, [class*="st-"] {
         font-family: 'Umoe', sans-serif;
     }
+    .custom-title {
+        text-align: center;      /* Centers the text */
+        font-size: 24px;         /* Makes it smaller than the default title */
+        line-height: 1.8;        /* Adds more space between the lines */
+        color: #334E68;          /* Keeps the text color consistent */
+        margin-bottom: 20px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
