@@ -5,15 +5,21 @@ st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="c
 
 st.markdown("""
 <style>
+    /* 1. You MUST import the font so the browser can download it! */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;500;700&display=swap');
+
     html, body, [class*="st-"] {
         font-family: 'Noto Sans Myanmar', 'Pyidaungsu', sans-serif !important;
     }
-    .custom-title {
-        text-align: center;      /* Centers the text */
-        font-size: 20px;         /* Makes it smaller than the default title */
-        line-height: 2.5;        /* Adds more space between the lines */
-        color: #334E68;          /* Keeps the text color consistent */
-        margin-bottom: 20px;
+    
+    /* 2. Target h1 directly and use !important to crush Streamlit's default styles */
+    h1.custom-title {
+        text-align: center !important;       
+        font-size: 24px !important;          /* Adjust this number if it's still too big/small */
+        line-height: 1.8 !important;         
+        color: #334E68 !important;           
+        margin-bottom: 20px !important;
+        font-family: 'Noto Sans Myanmar', 'Pyidaungsu', sans-serif !important;
     }
 </style>
 """, unsafe_allow_html=True)
