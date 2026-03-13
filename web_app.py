@@ -58,7 +58,7 @@ if not st.session_state.started:
     
     st.divider()
     
-    if st.button("Start Assessment"):
+    if st.button("မေးခွန်းတွေစဖြေမည်။"):
         st.session_state.started = True
         st.rerun()
 
@@ -80,14 +80,14 @@ else:
         st.subheader(current_question_text)
         
         # Get the user's choice
-        choice = st.radio("စာကြောင်းတိုင်းကိုဖတ်၍ လွန်ခဲ့သော တစ်ပတ်အတွင်း သင်မည်သို့ခံစားရသည်ကို ဖြေဆိုပါ။", options, index=None)
+        choice = st.radio("လွန်ခဲ့သော တစ်ပတ်အတွင်း သင်မည်သို့ခံစားရသည်ကို ဖြေဆိုပါ။", options, index=None,key=f"radio_q_{st.session_state.current_q}")
         
         st.divider()
         
         # Next Button
         if st.button("Next", type="primary"):
             if choice is None:
-                st.warning("Please select an answer before continuing.")
+                st.warning("အဖြေတခုကိုရွေးပါ")
             else:
                 # Save the score (0, 1, 2, or 3)
                 score = options.index(choice)
@@ -99,7 +99,7 @@ else:
     
     # If all questions are answered, calculate and show results:
     else:
-        st.success("You've completed the check-in!")
+        st.success("ဖြေဆိုစစ်ဆေးမှု ပြီးပါပြီ။")
         st.balloons() # Adds a nice visual celebration
         
         # --- 4. YOUR SCORING BACKBONE ---
@@ -124,7 +124,7 @@ else:
         a_result = get_label(a_score, [7, 9, 14, 19])
         s_result = get_label(s_score, [14, 18, 25, 33])
     
-        st.subheader("Your Results")
+        st.subheader("သင့်အမှတ်ပေါင်း")
         col1, col2, col3 = st.columns(3)
         col1.metric("သင်၏ စိတ်ဓာတ်ကျခြင်း (Depression) ရမှတ်ပေါင်းမှာ", f"{d_score}", d_result, delta_color="off")
         # Fixed the labels here to match Anxiety (a_score) and Stress (s_score)
@@ -136,7 +136,7 @@ else:
         st.info("အထက်ပါ သင့်ဖြေဆိုမှုများကို ယခုအချိန်အထိ တယ်လီကျန်းမာသို့ ပေးပို့ထားခြင်း မရှိသေးပါ။ သို့ဖြစ်ပါ၍ သင့်အဖြေများကို ပေးပို့လိုခြင်းမရှိပါက ယခုမေးခွန်းလွှာကို ပိတ်လိုက်နိုင်ပါသည်။ သို့မဟုတ် screenshot ရိုက်ယူထားပြီး စိတ်ကျန်းမာရေး ဆွေးနွေးမှုတွင် အသုံးပြုနိုင်ပါသည်။")
         
         # Add a button to restart the test
-        if st.button("Start Over"):
+        if st.button("ပြန်စမည်"):
             st.session_state.started = False # Send them back to the front page
             st.session_state.current_q = 0
             st.session_state.answers = []
