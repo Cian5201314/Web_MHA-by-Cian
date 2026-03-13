@@ -3,53 +3,6 @@ import streamlit as st
 # Setup the page appearance
 st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="centered")
 
-st.markdown("""
-<style>
-    /* Soften the main background */
-    .stApp {
-        background-color: #F4F7F6; 
-        color: #334E68; /* Dark slate instead of harsh black */
-    }
-    
-    /* Create a modern, floating white card in the center */
-    .main .block-container {
-        background-color: #FFFFFF;
-        padding: 3rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    /* Style primary buttons with a calming sage/slate blue */
-    .stButton>button {
-        background-color: #829AB1;
-        color: white;
-        border-radius: 8px;
-        border: none;
-        padding: 0.5rem 1rem;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-    
-    /* Button hover effect */
-    .stButton>button:hover {
-        background-color: #627D98;
-        color: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    /* Change the progress bar color to match */
-    .stProgress > div > div > div > div {
-        background-color: #829AB1;
-    }
-    
-    /* Soften the divider lines */
-    hr {
-        border-color: #E4E7EB;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 # --- 1. INITIALIZE MEMORY (SESSION STATE) ---
 if 'started' not in st.session_state:
