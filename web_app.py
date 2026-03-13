@@ -10,7 +10,7 @@ st.markdown("""
     }
     .custom-title {
         text-align: center;      /* Centers the text */
-        font-size: 24px;         /* Makes it smaller than the default title */
+        font-size: 20px;         /* Makes it smaller than the default title */
         line-height: 2.5;        /* Adds more space between the lines */
         color: #334E68;          /* Keeps the text color consistent */
         margin-bottom: 20px;
