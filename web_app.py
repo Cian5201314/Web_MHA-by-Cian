@@ -3,6 +3,13 @@ import streamlit as st
 # Setup the page appearance
 st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="centered")
 
+st.markdown("""
+<style>
+    html, body, [class*="st-"] {
+        font-family: 'Umoe', 'Pyidaungsu', sans-serif;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # --- 1. INITIALIZE MEMORY (SESSION STATE) ---
 if 'started' not in st.session_state:
@@ -48,7 +55,8 @@ options = [
 
 # FRONT PAGE
 if not st.session_state.started:
-    st.title("စိတ်ကျခြင်း၊ စိတ်ပူပန်ခြင်းနှင့် စိတ်ဖိစီးခြင်းတို့အတွက် မိမိကိုယ်တိုင် အမှတ်ပေးစနစ်ဖြင့်အမှတ်တွက်၍ ဆန်းစစ်လေ့လာခြင်း")
+    st.markdown('<h1 class="custom-title">စိတ်ကျခြင်း၊ စိတ်ပူပန်ခြင်းနှင့် စိတ်ဖိစီးခြင်းတို့အတွက် မိမိကိုယ်တိုင် အမှတ်ပေးစနစ်ဖြင့်အမှတ်တွက်၍ ဆန်းစစ်လေ့လာခြင်း</h1>', unsafe_allow_html=True)
+    
     st.markdown("---")
     
     # Notice how these are now single continuous lines in the code
@@ -64,7 +72,7 @@ if not st.session_state.started:
 
 # THE QUIZ
 else:
-    st.title("Mental Health Check-In")
+    #st.title("Mental Health Check-In")
     
     # If we haven't finished all 21 questions yet:
     if st.session_state.current_q < len(questions):
