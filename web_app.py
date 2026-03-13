@@ -3,7 +3,57 @@ import streamlit as st
 # Setup the page appearance
 st.set_page_config(page_title="Mental Health Check", page_icon="🧠", layout="centered")
 
+st.markdown("""
+<style>
+    /* Soften the main background */
+    .stApp {
+        background-color: #F4F7F6; 
+        color: #334E68; /* Dark slate instead of harsh black */
+    }
+    
+    /* Create a modern, floating white card in the center */
+    .main .block-container {
+        background-color: #FFFFFF;
+        padding: 3rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Style primary buttons with a calming sage/slate blue */
+    .stButton>button {
+        background-color: #829AB1;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    /* Button hover effect */
+    .stButton>button:hover {
+        background-color: #627D98;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Change the progress bar color to match */
+    .stProgress > div > div > div > div {
+        background-color: #829AB1;
+    }
+    
+    /* Soften the divider lines */
+    hr {
+        border-color: #E4E7EB;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # --- 1. INITIALIZE MEMORY (SESSION STATE) ---
+if 'started' not in st.session_state:
+    st.session_state.started = False  # Tracks if they are on the landing page
 if 'current_q' not in st.session_state:
     st.session_state.current_q = 0
 if 'answers' not in st.session_state:
@@ -45,75 +95,97 @@ st.title("Mental Health Check-In")
 
 # --- 3. DISPLAY LOGIC ---
 
-# If we haven't finished all 21 questions yet:
-if st.session_state.current_q < len(questions):
-    
-    # Progress Bar
-    progress_percent = st.session_state.current_q / len(questions)
-    st.progress(progress_percent)
-    st.write(f"**Question {st.session_state.current_q + 1} of 21**")
-    st.divider()
-    
-    # Show the current question
-    current_question_text = questions[st.session_state.current_q]
-    st.subheader(current_question_text)
-    
-    # Get the user's choice
-    choice = st.radio("Select how much this applied to you over the past week:", options, index=None)
+# FRONT PAGE
+if not st.session_state.started:
+    st.title("စိတ်ကျခြင်း၊ စိတ်ပူပန်ခြင်းနှင့် စိတ်ဖိစီးခြင်းတို့အတွက် မိမိကိုယ်တိုင် အမှတ်ပေးစနစ်ဖြင့်အမှတ်တွက်၍ ဆန်းစစ်လေ့လာခြင်း")
+    st.markdown("")
+    st.write("စိတ်ကျန်းမာရေးကို ဂရုစိုက်ခြင်းသည် ခန္ဓာကိုယ်ကျန်းမာရေးကို ဂရုစိုက်သကဲ့သို့ ထပ်တူအရေးကြီးပါသည်။ ဤ စိတ်ကျခြင်း၊ စိတ်ပူပန်ခြင်းနှင့် စိတ်ဖိစီးခြင်းတို့အတွက် အမှတ်ပေးစနစ်ဖြင့် အမှတ်တွက်၍ ဆန်းစစ်လေ့လာခြင်းမေးခွန်းများကို ဖြေဆိုပြီးလျှင် သင့်ရမှတ်ကို တွက်ချက်ပေးပါမည်။
+")
+    st.write("မေးခွန်း ၂၁ ခုပါရှိပါမည်။ စာကြောင်းတိုင်းကိုဖတ်၍ လွန်ခဲ့သော တစ်ပတ်အတွင်း သင်မည်သို့ခံစားရသည်ကို ဖြေဆိုပါ။
+အဖြေ မှန်/မှား ဟူ၍ မရှိပါ။ အချိန်ကြာမြင့်စွာ မစဉ်းစားပါနှင့်။
+")
+    st.write("(ဤဆန်းစစ်ချက်မှ ရရှိလာသော အဖြေရလာဒ်များသည် ယေဘုယျ ခန့်မှန်းတွက်ချက်မှုများသာဖြစ်ပြီး မိမိတွင် အမှန်တကယ် စိတ်ကျရောဂါ၊ စိတ်ပူပန်မှုနှင့် စိတ်ဖိစီးမှုအခြေအနေများ ရှိ/မရှိ နှင့် ပြင်းထန်/မပြင်းထန် စသည်တို့အတွက် စိတ်ကျန်းမာရေးဆရာဝန်နှင့် အသေးစိတ် တိုင်ပင်ဆွေးနွေးရန် လိုအပ်ပါသည်)*")
     
     st.divider()
     
-    # Next Button
-    if st.button("Next", type="primary"):
-        if choice is None:
-            st.warning("Please select an answer before continuing.")
-        else:
-            # Save the score (0, 1, 2, or 3)
-            score = options.index(choice)
-            st.session_state.answers.append(score)
-            
-            # Move to the next question
-            st.session_state.current_q += 1
-            st.rerun()
-
-# If all questions are answered, calculate and show results:
-else:
-    st.success("You've completed the check-in!")
-    st.balloons() # Adds a nice visual celebration
-    
-    # --- 4. YOUR SCORING BACKBONE ---
-    r = [0] + st.session_state.answers
-    
-    d_total = r[3] + r[5] + r[10] + r[13] + r[16] + r[17] + r[21]
-    a_total = r[2] + r[4] + r[7] + r[9] + r[15] + r[19] + r[20]
-    s_total = r[1] + r[6] + r[8] + r[11] + r[12] + r[14] + r[18]
-    
-    d_score = d_total * 2
-    a_score = a_total * 2
-    s_score = s_total * 2
-
-    def get_label(score, cutoffs):
-        if score <= cutoffs[0]: return "Normal"
-        elif score <= cutoffs[1]: return "Mild"
-        elif score <= cutoffs[2]: return "Moderate"
-        elif score <= cutoffs[3]: return "Severe"
-        else: return "Extremely Severe"
-
-    d_result = get_label(d_score, [9, 13, 20, 27])
-    a_result = get_label(a_score, [7, 9, 14, 19])
-    s_result = get_label(s_score, [14, 18, 25, 33])
-
-    st.subheader("Your Results")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Depression", f"{d_score}", d_result, delta_color="off")
-    col2.metric("Anxiety", f"{a_score}", a_result, delta_color="off")
-    col3.metric("Stress", f"{s_score}", s_result, delta_color="off")
-    
-    st.info("I will be here for you anytime you want. If you feel down, come back anytime!")
-    
-    # Add a button to restart the test
-    if st.button("Start Over"):
-        st.session_state.current_q = 0
-        st.session_state.answers = []
+    if st.button("Start Assessment"):
+        st.session_state.started = True
         st.rerun()
+# THE QUIZ
+else:
+    st.title("Mental Health Check-In")
+# If we haven't finished all 21 questions yet:
+    if st.session_state.current_q < len(questions):
+        
+        # Progress Bar
+        progress_percent = st.session_state.current_q / len(questions)
+        st.progress(progress_percent)
+        st.write(f"**Question {st.session_state.current_q + 1} of 21**")
+        st.divider()
+        
+        # Show the current question
+        current_question_text = questions[st.session_state.current_q]
+        st.subheader(current_question_text)
+        
+        # Get the user's choice
+        choice = st.radio("စာကြောင်းတိုင်းကိုဖတ်၍ လွန်ခဲ့သော တစ်ပတ်အတွင်း သင်မည်သို့ခံစားရသည်ကို ဖြေဆိုပါ။", options, index=None)
+        
+        st.divider()
+        
+        # Next Button
+        if st.button("Next", type="primary"):
+            if choice is None:
+                st.warning("Please select an answer before continuing.")
+            else:
+                # Save the score (0, 1, 2, or 3)
+                score = options.index(choice)
+                st.session_state.answers.append(score)
+                
+                # Move to the next question
+                st.session_state.current_q += 1
+                st.rerun()
+    
+    # If all questions are answered, calculate and show results:
+    else:
+        st.success("You've completed the check-in!")
+        st.balloons() # Adds a nice visual celebration
+        
+        # --- 4. YOUR SCORING BACKBONE ---
+        r = [0] + st.session_state.answers
+        
+        d_total = r[3] + r[5] + r[10] + r[13] + r[16] + r[17] + r[21]
+        a_total = r[2] + r[4] + r[7] + r[9] + r[15] + r[19] + r[20]
+        s_total = r[1] + r[6] + r[8] + r[11] + r[12] + r[14] + r[18]
+        
+        d_score = d_total * 2
+        a_score = a_total * 2
+        s_score = s_total * 2
+    
+        def get_label(score, cutoffs):
+            if score <= cutoffs[0]: return "ပုံမှန်"
+            elif score <= cutoffs[1]: return "အပျော့စား"
+            elif score <= cutoffs[2]: return "အသင့်အတင့်"
+            elif score <= cutoffs[3]: return "ပြင်းထန်"
+            else: return "အလွန်ပြင်းထန်"
+    
+        d_result = get_label(d_score, [9, 13, 20, 27])
+        a_result = get_label(a_score, [7, 9, 14, 19])
+        s_result = get_label(s_score, [14, 18, 25, 33])
+    
+        st.subheader("Your Results")
+        col1, col2, col3 = st.columns(3)
+        col1.metric("သင်၏ စိတ်ဓာတ်ကျခြင်း (Depression) ရမှတ်ပေါင်းမှာ", f"{d_score}", d_result, delta_color="off")
+        col2.metric("သင်၏ စိတ်ဖိစီးခြင်း (Stress) ရမှတ်ပေါင်းမှာ", f"{a_score}", a_result, delta_color="off")
+        col3.metric("သင်၏ စိုးရိမ်စိတ်များခြင်း (Anxiety) ရမှတ်ပေါင်းမှာ", f"{s_score}", s_result, delta_color="off")
+        
+        st.info("သင့်အမှတ်ပေါင်းသည် ပြင်းထန် (သို့) အလွန်ပြင်းထန် အပိုင်းအခြားအတွင်း ရောက်နေလျှင် စိတ်ကျန်းမာရေးဆရာဝန်နှင့် မဖြစ်မနေ ချက်ချင်း ဆွေးနွေးတိုင်ပင်သင့်ပါသည်။")
+        st.info("စိတ်ကျန်းမာရေးအတွက် ဆွေးနွေးမှုရယူရန် တယ်လီကျန်းမာ မက်ဆင်ဂျာ (https://m.me/telehealthmm) သို့မဟုတ် တယ်လီဂရမ် (https://t.me/TLKMReception) သို့ အခုပဲဆက်သွယ်ပြီး ဘိုကင်ယူလိုက်ပါ။")
+        st.info("အထက်ပါ သင့်ဖြေဆိုမှုများကို ယခုအချိန်အထိ တယ်လီကျန်းမာသို့ ပေးပို့ထားခြင်း မရှိသေးပါ။ သို့ဖြစ်ပါ၍ သင့်အဖြေများကို ပေးပို့လိုခြင်းမရှိပါက ယခုမေးခွန်းလွှာကို ပိတ်လိုက်နိုင်ပါသည်။ သို့မဟုတ် screenshot ရိုက်ယူထားပြီး စိတ်ကျန်းမာရေး ဆွေးနွေးမှုတွင် အသုံးပြုနိုင်ပါသည်။")
+        
+        # Add a button to restart the test
+        if st.button("Start Over"):
+            st.session_state.started = False # Send them back to the front page
+            st.session_state.current_q = 0
+            st.session_state.answers = []
+            st.rerun()
 
